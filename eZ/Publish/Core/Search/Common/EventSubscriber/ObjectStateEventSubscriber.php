@@ -6,7 +6,7 @@
  */
 namespace eZ\Publish\Core\Search\Common\EventSubscriber;
 
-use eZ\Publish\Core\Event\ObjectState\SetContentStateEvent;
+use eZ\Publish\API\Repository\Events\ObjectState\SetContentStateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ObjectStateEventSubscriber extends AbstractSearchEventSubscriber implements EventSubscriberInterface
@@ -18,7 +18,7 @@ class ObjectStateEventSubscriber extends AbstractSearchEventSubscriber implement
         ];
     }
 
-    public function onSetContentState(\eZ\Publish\API\Repository\Events\ObjectState\SetContentStateEvent $event)
+    public function onSetContentState(SetContentStateEvent $event)
     {
         $contentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo($event->getContentInfo()->id);
 

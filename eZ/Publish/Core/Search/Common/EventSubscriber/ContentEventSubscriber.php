@@ -6,13 +6,13 @@
  */
 namespace eZ\Publish\Core\Search\Common\EventSubscriber;
 
-use eZ\Publish\Core\Event\Content\CopyContentEvent;
-use eZ\Publish\Core\Event\Content\DeleteContentEvent;
-use eZ\Publish\Core\Event\Content\DeleteTranslationEvent;
-use eZ\Publish\Core\Event\Content\HideContentEvent;
-use eZ\Publish\Core\Event\Content\PublishVersionEvent;
-use eZ\Publish\Core\Event\Content\RevealContentEvent;
-use eZ\Publish\Core\Event\Content\UpdateContentMetadataEvent;
+use eZ\Publish\API\Repository\Events\Content\CopyContentEvent;
+use eZ\Publish\API\Repository\Events\Content\DeleteContentEvent;
+use eZ\Publish\API\Repository\Events\Content\DeleteTranslationEvent;
+use eZ\Publish\API\Repository\Events\Content\HideContentEvent;
+use eZ\Publish\API\Repository\Events\Content\PublishVersionEvent;
+use eZ\Publish\API\Repository\Events\Content\RevealContentEvent;
+use eZ\Publish\API\Repository\Events\Content\UpdateContentMetadataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ContentEventSubscriber extends AbstractSearchEventSubscriber implements EventSubscriberInterface
@@ -30,7 +30,7 @@ class ContentEventSubscriber extends AbstractSearchEventSubscriber implements Ev
         ];
     }
 
-    public function onCopyContent(\eZ\Publish\API\Repository\Events\Content\CopyContentEvent $event)
+    public function onCopyContent(CopyContentEvent $event)
     {
         $this->searchHandler->indexContent(
             $this->persistenceHandler->contentHandler()->load(
@@ -48,7 +48,7 @@ class ContentEventSubscriber extends AbstractSearchEventSubscriber implements Ev
         }
     }
 
-    public function onDeleteContent(\eZ\Publish\API\Repository\Events\Content\DeleteContentEvent $event)
+    public function onDeleteContent(DeleteContentEvent $event)
     {
         $this->searchHandler->deleteContent($event->getContentInfo()->id);
 
@@ -57,7 +57,7 @@ class ContentEventSubscriber extends AbstractSearchEventSubscriber implements Ev
         }
     }
 
-    public function onDeleteTranslation(\eZ\Publish\API\Repository\Events\Content\DeleteTranslationEvent $event)
+    public function onDeleteTranslation(DeleteTranslationEvent $event)
     {
         $contentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getContentInfo()->id
@@ -83,7 +83,7 @@ class ContentEventSubscriber extends AbstractSearchEventSubscriber implements Ev
         }
     }
 
-    public function onHideContent(\eZ\Publish\API\Repository\Events\Content\HideContentEvent $event)
+    public function onHideContent(HideContentEvent $event)
     {
         $locations = $this->persistenceHandler->locationHandler()->loadLocationsByContent($event->getContentInfo()->id);
         foreach ($locations as $location) {
@@ -91,7 +91,7 @@ class ContentEventSubscriber extends AbstractSearchEventSubscriber implements Ev
         }
     }
 
-    public function onPublishVersion(\eZ\Publish\API\Repository\Events\Content\PublishVersionEvent $event)
+    public function onPublishVersion(PublishVersionEvent $event)
     {
         $this->searchHandler->indexContent(
             $this->persistenceHandler->contentHandler()->load($event->getContent()->id, $event->getContent()->getVersionInfo()->versionNo)
@@ -103,7 +103,7 @@ class ContentEventSubscriber extends AbstractSearchEventSubscriber implements Ev
         }
     }
 
-    public function onRevealContent(\eZ\Publish\API\Repository\Events\Content\RevealContentEvent $event)
+    public function onRevealContent(RevealContentEvent $event)
     {
         $locations = $this->persistenceHandler->locationHandler()->loadLocationsByContent($event->getContentInfo()->id);
         foreach ($locations as $location) {
@@ -111,7 +111,7 @@ class ContentEventSubscriber extends AbstractSearchEventSubscriber implements Ev
         }
     }
 
-    public function onUpdateContentMetadata(\eZ\Publish\API\Repository\Events\Content\UpdateContentMetadataEvent $event)
+    public function onUpdateContentMetadata(UpdateContentMetadataEvent $event)
     {
         $contentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo($event->getContent()->id);
         if (!$contentInfo->isPublished) {

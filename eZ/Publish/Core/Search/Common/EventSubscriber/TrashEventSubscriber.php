@@ -6,9 +6,9 @@
  */
 namespace eZ\Publish\Core\Search\Common\EventSubscriber;
 
+use eZ\Publish\API\Repository\Events\Trash\RecoverEvent;
+use eZ\Publish\API\Repository\Events\Trash\TrashEvent;
 use eZ\Publish\API\Repository\Values\Content\TrashItem;
-use eZ\Publish\Core\Event\Trash\RecoverEvent;
-use eZ\Publish\Core\Event\Trash\TrashEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class TrashEventSubscriber extends AbstractSearchEventSubscriber implements EventSubscriberInterface
@@ -21,12 +21,12 @@ class TrashEventSubscriber extends AbstractSearchEventSubscriber implements Even
         ];
     }
 
-    public function onRecover(\eZ\Publish\API\Repository\Events\Trash\RecoverEvent $event)
+    public function onRecover(RecoverEvent $event)
     {
         $this->indexSubtree($event->getLocation()->id);
     }
 
-    public function onTrash(\eZ\Publish\API\Repository\Events\Trash\TrashEvent $event)
+    public function onTrash(TrashEvent $event)
     {
         if ($event->getTrashItem() instanceof TrashItem) {
             $this->searchHandler->deleteContent(

@@ -6,15 +6,15 @@
  */
 namespace eZ\Publish\Core\Search\Common\EventSubscriber;
 
+use eZ\Publish\API\Repository\Events\Location\CopySubtreeEvent;
+use eZ\Publish\API\Repository\Events\Location\CreateLocationEvent;
+use eZ\Publish\API\Repository\Events\Location\DeleteLocationEvent;
+use eZ\Publish\API\Repository\Events\Location\HideLocationEvent;
+use eZ\Publish\API\Repository\Events\Location\MoveSubtreeEvent;
+use eZ\Publish\API\Repository\Events\Location\SwapLocationEvent;
+use eZ\Publish\API\Repository\Events\Location\UnhideLocationEvent;
+use eZ\Publish\API\Repository\Events\Location\UpdateLocationEvent;
 use eZ\Publish\API\Repository\Values\Content\Location;
-use eZ\Publish\Core\Event\Location\CopySubtreeEvent;
-use eZ\Publish\Core\Event\Location\CreateLocationEvent;
-use eZ\Publish\Core\Event\Location\DeleteLocationEvent;
-use eZ\Publish\Core\Event\Location\HideLocationEvent;
-use eZ\Publish\Core\Event\Location\MoveSubtreeEvent;
-use eZ\Publish\Core\Event\Location\SwapLocationEvent;
-use eZ\Publish\Core\Event\Location\UnhideLocationEvent;
-use eZ\Publish\Core\Event\Location\UpdateLocationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LocationEventSubscriber extends AbstractSearchEventSubscriber implements EventSubscriberInterface
@@ -33,12 +33,12 @@ class LocationEventSubscriber extends AbstractSearchEventSubscriber implements E
         ];
     }
 
-    public function onCopySubtree(\eZ\Publish\API\Repository\Events\Location\CopySubtreeEvent $event)
+    public function onCopySubtree(CopySubtreeEvent $event)
     {
         $this->indexSubtree($event->getLocation()->id);
     }
 
-    public function onCreateLocation(\eZ\Publish\API\Repository\Events\Location\CreateLocationEvent $event)
+    public function onCreateLocation(CreateLocationEvent $event)
     {
         $contentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getContentInfo()->id
@@ -52,7 +52,7 @@ class LocationEventSubscriber extends AbstractSearchEventSubscriber implements E
         );
     }
 
-    public function onDeleteLocation(\eZ\Publish\API\Repository\Events\Location\DeleteLocationEvent $event)
+    public function onDeleteLocation(DeleteLocationEvent $event)
     {
         $this->searchHandler->deleteLocation(
             $event->getLocation()->id,
@@ -60,17 +60,17 @@ class LocationEventSubscriber extends AbstractSearchEventSubscriber implements E
         );
     }
 
-    public function onHideLocation(\eZ\Publish\API\Repository\Events\Location\HideLocationEvent $event)
+    public function onHideLocation(HideLocationEvent $event)
     {
         $this->indexSubtree($event->getHiddenLocation()->id);
     }
 
-    public function onMoveSubtree(\eZ\Publish\API\Repository\Events\Location\MoveSubtreeEvent $event)
+    public function onMoveSubtree(MoveSubtreeEvent $event)
     {
         $this->indexSubtree($event->getLocation()->id);
     }
 
-    public function onSwapLocation(\eZ\Publish\API\Repository\Events\Location\SwapLocationEvent $event)
+    public function onSwapLocation(SwapLocationEvent $event)
     {
         $locations = [
             $event->getLocation1(),
@@ -93,12 +93,12 @@ class LocationEventSubscriber extends AbstractSearchEventSubscriber implements E
         });
     }
 
-    public function onUnhideLocation(\eZ\Publish\API\Repository\Events\Location\UnhideLocationEvent $event)
+    public function onUnhideLocation(UnhideLocationEvent $event)
     {
         $this->indexSubtree($event->getRevealedLocation()->id);
     }
 
-    public function onUpdateLocation(\eZ\Publish\API\Repository\Events\Location\UpdateLocationEvent $event)
+    public function onUpdateLocation(UpdateLocationEvent $event)
     {
         $contentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getLocation()->contentId

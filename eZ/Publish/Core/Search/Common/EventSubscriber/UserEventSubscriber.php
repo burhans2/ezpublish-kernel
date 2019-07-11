@@ -6,13 +6,13 @@
  */
 namespace eZ\Publish\Core\Search\Common\EventSubscriber;
 
-use eZ\Publish\Core\Event\User\CreateUserEvent;
-use eZ\Publish\Core\Event\User\CreateUserGroupEvent;
-use eZ\Publish\Core\Event\User\DeleteUserEvent;
-use eZ\Publish\Core\Event\User\DeleteUserGroupEvent;
-use eZ\Publish\Core\Event\User\MoveUserGroupEvent;
-use eZ\Publish\Core\Event\User\UpdateUserEvent;
-use eZ\Publish\Core\Event\User\UpdateUserGroupEvent;
+use eZ\Publish\API\Repository\Events\User\CreateUserEvent;
+use eZ\Publish\API\Repository\Events\User\CreateUserGroupEvent;
+use eZ\Publish\API\Repository\Events\User\DeleteUserEvent;
+use eZ\Publish\API\Repository\Events\User\DeleteUserGroupEvent;
+use eZ\Publish\API\Repository\Events\User\MoveUserGroupEvent;
+use eZ\Publish\API\Repository\Events\User\UpdateUserEvent;
+use eZ\Publish\API\Repository\Events\User\UpdateUserGroupEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserEventSubscriber extends AbstractSearchEventSubscriber implements EventSubscriberInterface
@@ -30,7 +30,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         ];
     }
 
-    public function onCreateUser(\eZ\Publish\API\Repository\Events\User\CreateUserEvent $event)
+    public function onCreateUser(CreateUserEvent $event)
     {
         $userContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUser()->id
@@ -52,7 +52,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onCreateUserGroup(\eZ\Publish\API\Repository\Events\User\CreateUserGroupEvent $event)
+    public function onCreateUserGroup(CreateUserGroupEvent $event)
     {
         $userGroupContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUserGroup()->id
@@ -74,7 +74,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onDeleteUser(\eZ\Publish\API\Repository\Events\User\DeleteUserEvent $event)
+    public function onDeleteUser(DeleteUserEvent $event)
     {
         $this->searchHandler->deleteContent($event->getUser()->id);
 
@@ -83,7 +83,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onDeleteUserGroup(\eZ\Publish\API\Repository\Events\User\DeleteUserGroupEvent $event)
+    public function onDeleteUserGroup(DeleteUserGroupEvent $event)
     {
         $this->searchHandler->deleteContent($event->getUserGroup()->id);
 
@@ -92,7 +92,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onMoveUserGroup(\eZ\Publish\API\Repository\Events\User\MoveUserGroupEvent $event)
+    public function onMoveUserGroup(MoveUserGroupEvent $event)
     {
         $userGroupContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUserGroup()->id
@@ -101,7 +101,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         $this->indexSubtree($userGroupContentInfo->mainLocationId);
     }
 
-    public function onUpdateUser(\eZ\Publish\API\Repository\Events\User\UpdateUserEvent $event)
+    public function onUpdateUser(UpdateUserEvent $event)
     {
         $userContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUser()->id
@@ -123,7 +123,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onUpdateUserGroup(\eZ\Publish\API\Repository\Events\User\UpdateUserGroupEvent $event)
+    public function onUpdateUserGroup(UpdateUserGroupEvent $event)
     {
         $userContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUserGroup()->id

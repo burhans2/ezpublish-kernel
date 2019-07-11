@@ -6,7 +6,7 @@
  */
 namespace eZ\Publish\Core\Search\Common\EventSubscriber;
 
-use eZ\Publish\Core\Event\Section\AssignSectionEvent;
+use eZ\Publish\API\Repository\Events\Section\AssignSectionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SectionEventSubscriber extends AbstractSearchEventSubscriber implements EventSubscriberInterface
@@ -18,7 +18,7 @@ class SectionEventSubscriber extends AbstractSearchEventSubscriber implements Ev
         ];
     }
 
-    public function onAssignSection(\eZ\Publish\API\Repository\Events\Section\AssignSectionEvent $event)
+    public function onAssignSection(AssignSectionEvent $event)
     {
         $contentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo($event->getContentInfo()->id);
         $this->searchHandler->indexContent(
