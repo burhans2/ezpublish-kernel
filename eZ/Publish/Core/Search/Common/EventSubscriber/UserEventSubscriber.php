@@ -30,7 +30,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         ];
     }
 
-    public function onCreateUser(CreateUserEvent $event)
+    public function onCreateUser(\eZ\Publish\API\Repository\Events\User\CreateUserEvent $event)
     {
         $userContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUser()->id
@@ -52,7 +52,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onCreateUserGroup(CreateUserGroupEvent $event)
+    public function onCreateUserGroup(\eZ\Publish\API\Repository\Events\User\CreateUserGroupEvent $event)
     {
         $userGroupContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUserGroup()->id
@@ -74,7 +74,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onDeleteUser(DeleteUserEvent $event)
+    public function onDeleteUser(\eZ\Publish\API\Repository\Events\User\DeleteUserEvent $event)
     {
         $this->searchHandler->deleteContent($event->getUser()->id);
 
@@ -83,7 +83,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onDeleteUserGroup(DeleteUserGroupEvent $event)
+    public function onDeleteUserGroup(\eZ\Publish\API\Repository\Events\User\DeleteUserGroupEvent $event)
     {
         $this->searchHandler->deleteContent($event->getUserGroup()->id);
 
@@ -92,7 +92,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onMoveUserGroup(MoveUserGroupEvent $event)
+    public function onMoveUserGroup(\eZ\Publish\API\Repository\Events\User\MoveUserGroupEvent $event)
     {
         $userGroupContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUserGroup()->id
@@ -101,7 +101,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         $this->indexSubtree($userGroupContentInfo->mainLocationId);
     }
 
-    public function onUpdateUser(UpdateUserEvent $event)
+    public function onUpdateUser(\eZ\Publish\API\Repository\Events\User\UpdateUserEvent $event)
     {
         $userContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUser()->id
@@ -123,7 +123,7 @@ class UserEventSubscriber extends AbstractSearchEventSubscriber implements Event
         }
     }
 
-    public function onUpdateUserGroup(UpdateUserGroupEvent $event)
+    public function onUpdateUserGroup(\eZ\Publish\API\Repository\Events\User\UpdateUserGroupEvent $event)
     {
         $userContentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getUserGroup()->id

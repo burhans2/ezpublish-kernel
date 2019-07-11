@@ -18,7 +18,7 @@ class ObjectStateEventSubscriber extends AbstractSearchEventSubscriber implement
         ];
     }
 
-    public function onSetContentState(SetContentStateEvent $event)
+    public function onSetContentState(\eZ\Publish\API\Repository\Events\ObjectState\SetContentStateEvent $event)
     {
         $contentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo($event->getContentInfo()->id);
 

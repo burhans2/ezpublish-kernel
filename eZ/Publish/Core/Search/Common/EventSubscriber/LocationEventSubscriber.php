@@ -33,12 +33,12 @@ class LocationEventSubscriber extends AbstractSearchEventSubscriber implements E
         ];
     }
 
-    public function onCopySubtree(CopySubtreeEvent $event)
+    public function onCopySubtree(\eZ\Publish\API\Repository\Events\Location\CopySubtreeEvent $event)
     {
         $this->indexSubtree($event->getLocation()->id);
     }
 
-    public function onCreateLocation(CreateLocationEvent $event)
+    public function onCreateLocation(\eZ\Publish\API\Repository\Events\Location\CreateLocationEvent $event)
     {
         $contentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getContentInfo()->id
@@ -52,7 +52,7 @@ class LocationEventSubscriber extends AbstractSearchEventSubscriber implements E
         );
     }
 
-    public function onDeleteLocation(DeleteLocationEvent $event)
+    public function onDeleteLocation(\eZ\Publish\API\Repository\Events\Location\DeleteLocationEvent $event)
     {
         $this->searchHandler->deleteLocation(
             $event->getLocation()->id,
@@ -60,17 +60,17 @@ class LocationEventSubscriber extends AbstractSearchEventSubscriber implements E
         );
     }
 
-    public function onHideLocation(HideLocationEvent $event)
+    public function onHideLocation(\eZ\Publish\API\Repository\Events\Location\HideLocationEvent $event)
     {
         $this->indexSubtree($event->getHiddenLocation()->id);
     }
 
-    public function onMoveSubtree(MoveSubtreeEvent $event)
+    public function onMoveSubtree(\eZ\Publish\API\Repository\Events\Location\MoveSubtreeEvent $event)
     {
         $this->indexSubtree($event->getLocation()->id);
     }
 
-    public function onSwapLocation(SwapLocationEvent $event)
+    public function onSwapLocation(\eZ\Publish\API\Repository\Events\Location\SwapLocationEvent $event)
     {
         $locations = [
             $event->getLocation1(),
@@ -93,12 +93,12 @@ class LocationEventSubscriber extends AbstractSearchEventSubscriber implements E
         });
     }
 
-    public function onUnhideLocation(UnhideLocationEvent $event)
+    public function onUnhideLocation(\eZ\Publish\API\Repository\Events\Location\UnhideLocationEvent $event)
     {
         $this->indexSubtree($event->getRevealedLocation()->id);
     }
 
-    public function onUpdateLocation(UpdateLocationEvent $event)
+    public function onUpdateLocation(\eZ\Publish\API\Repository\Events\Location\UpdateLocationEvent $event)
     {
         $contentInfo = $this->persistenceHandler->contentHandler()->loadContentInfo(
             $event->getLocation()->contentId
